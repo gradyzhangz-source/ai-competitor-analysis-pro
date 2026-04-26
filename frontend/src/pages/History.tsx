@@ -69,10 +69,10 @@ export const History: React.FC = () => {
   if (!isApiConfigured()) {
     return (
       <Alert
-        type="warning"
+        type="info"
         showIcon
-        message="未配置后端 API"
-        description="GitHub Pages 为纯静态页。请在本仓库 Settings → Secrets → Actions 中设置 VITE_API_BASE 为已部署的 FastAPI 根地址，并重新运行 Deploy GitHub Pages 工作流。"
+        message="静态演示模式暂不保存历史记录"
+        description="GitHub Pages 版本不依赖后端数据库，因此历史记录不会持久化。要启用真实历史记录，请部署 FastAPI 后端并配置 VITE_API_BASE。"
       />
     );
   }

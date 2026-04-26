@@ -4,7 +4,7 @@ import { InputForm } from '../components/InputForm';
 import { PipelineStatus } from '../components/PipelineStatus';
 import { ResultTabs } from '../components/ResultTabs';
 import { useAnalysis } from '../hooks/useAnalysis';
-import { fetchConfig } from '../api/client';
+import { fetchConfig, isApiConfigured } from '../api/client';
 import { LLMConfig } from '../types';
 
 export const NewAnalysis: React.FC = () => {
@@ -42,7 +42,7 @@ export const NewAnalysis: React.FC = () => {
   }, [error]);
 
   const handleSubmit = (values: any) => {
-    if (!llmConfig.api_key) {
+    if (isApiConfigured() && !llmConfig.api_key) {
       message.error('请在配置中设置 API Key');
       return;
     }

@@ -49,8 +49,8 @@ export const ProLayout: React.FC = () => {
               showIcon
               closable
               style={{ marginBottom: 16 }}
-              message="GitHub Pages 静态站"
-              description="分析接口需独立部署 FastAPI。请在仓库 Settings → Secrets and variables → Actions 中创建 Secret：名称 VITE_API_BASE，值为你的 API 根地址（如 https://xxx.railway.app，不要带结尾 /api），保存后重新运行「Deploy GitHub Pages」工作流。"
+              message="GitHub Pages 静态演示模式"
+              description="当前页面无需后端也可完整演示分析流程、图表、编辑和导出能力。如需接入真实 LLM，请部署 FastAPI 后端，并在仓库 Secret 中配置 VITE_API_BASE 后重新运行 Pages 工作流。"
             />
           )}
           <Outlet />

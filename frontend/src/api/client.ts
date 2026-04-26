@@ -1,4 +1,5 @@
 import { AnalysisRequest } from '../types';
+import { runStaticDemo } from './mockData';
 
 /**
  * 开发: Vite 代理到本地 FastAPI
@@ -43,11 +44,7 @@ export async function startAnalysisStream(
   onError: (err: any) => void
 ) {
   if (!isApiConfigured()) {
-    onError(
-      new Error(
-        '未配置后端地址：请在 GitHub 仓库 Settings → Secrets → Actions 中新增 VITE_API_BASE 为你的 FastAPI 根 URL（如 https://xxx.railway.app），然后重新运行 Deploy GitHub Pages 工作流。'
-      )
-    );
+    await runStaticDemo(request, onProgress, onResult);
     return;
   }
   try {
