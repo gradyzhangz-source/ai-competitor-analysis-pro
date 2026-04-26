@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Spin, message, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ResultTabs } from '../components/ResultTabs';
+import { API_BASE, isApiConfigured } from '../api/client';
+import { Alert } from 'antd';
 
 export const ReportDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,8 +14,12 @@ export const ReportDetail: React.FC = () => {
 
   useEffect(() => {
     const fetchTask = async () => {
+      if (!isApiConfigured() || !id) {
+        setLoading(false);
+        return;
+      }
       try {
-        const res = await fetch(`/api/tasks/${id}`);
+        const res = await fetch(`${API_BASE}/tasks/${id}`);
         const data = await res.json();
         if (data.status === 'completed' && data.result_data) {
           setState(data.result_data);
@@ -28,6 +34,17 @@ export const ReportDetail: React.FC = () => {
     };
     fetchTask();
   }, [id]);
+
+  if (!isApiConfigured()) {
+    return (
+      <Alert
+        type="warning"
+        showIcon
+        message="未配置后端 API"
+        description="请设置仓库 Secret VITE_API_BASE 后重新部署 GitHub Pages。"
+      />
+    );
+  }
 
   if (loading) return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />;
   if (!state) return <div>报告不存在</div>;

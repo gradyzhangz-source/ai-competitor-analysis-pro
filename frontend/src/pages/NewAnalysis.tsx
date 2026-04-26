@@ -20,15 +20,19 @@ export const NewAnalysis: React.FC = () => {
   const { isRunning, progress, result, error, startAnalysis } = useAnalysis();
 
   useEffect(() => {
-    fetchConfig().then(cfg => {
-      setLlmConfig(prev => ({
-        ...prev,
-        provider: cfg.llm_provider,
-        api_key: cfg.llm_config[cfg.llm_provider]?.api_key || '',
-        model: cfg.llm_config[cfg.llm_provider]?.model || '',
-        base_url: cfg.llm_config[cfg.llm_provider]?.base_url || '',
-      }));
-    }).catch(console.error);
+    fetchConfig()
+      .then((cfg) => {
+        setLlmConfig((prev) => ({
+          ...prev,
+          provider: cfg.llm_provider,
+          api_key: cfg.llm_config[cfg.llm_provider]?.api_key || '',
+          model: cfg.llm_config[cfg.llm_provider]?.model || '',
+          base_url: cfg.llm_config[cfg.llm_provider]?.base_url || '',
+        }));
+      })
+      .catch(() => {
+        // GitHub Pages 无后端或未设 VITE_API_BASE 时跳过，由侧边栏/表单自行填 Key
+      });
   }, []);
 
   useEffect(() => {

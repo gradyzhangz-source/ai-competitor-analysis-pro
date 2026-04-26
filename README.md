@@ -96,6 +96,24 @@ npm run dev
 
 ---
 
+## GitHub Pages（在线演示站）
+
+本仓库已配置 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)：推送到 `main` 会**自动构建前端**并发布到 **GitHub Pages**。
+
+1. 在 GitHub 打开仓库 **Settings → Pages**  
+2. **Build and deployment** 里，**Source** 选 **GitHub Actions**（不要选 branch）  
+3. 等一次 `Deploy GitHub Pages` 工作流跑绿后，页面地址一般为：  
+   `https://<你的用户名>.github.io/ai-competitor-analysis-pro/`
+
+> **说明**：GitHub Pages 只托管**静态文件**，不运行 FastAPI。若要在网页上使用「分析 / 历史记录」，需先把后端部署到云主机（如 Railway、Render、Fly.io），并在仓库 **Settings → Secrets and variables → Actions** 中增加 Secret：  
+> - 名称：`VITE_API_BASE`  
+> - 值：你的 API **站点根地址**（如 `https://my-api.railway.app`，**不要**写 `/api` 结尾，构建时会自动拼上 `/api`）  
+> 保存后，在 **Actions** 里重新运行 **Deploy GitHub Pages** 工作流。
+
+未配置 `VITE_API_BASE` 时，站点仍可打开，但会提示需配置 API；本地开发仍用 `npm run dev` 走 Vite 代理，不受影响。
+
+---
+
 ## GitHub Actions（CI）
 
 仓库根目录已包含 [`.github/workflows/ci.yml`](.github/workflows/ci.yml)。将项目推送到 GitHub 后，在仓库页签打开 **Actions**，即可看到自动流水线：

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Space, message, Tag } from 'antd';
+import { Table, Button, Space, message, Tag, Alert } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE, isApiConfigured } from '../api/client';
 
 export const History: React.FC = () => {
   const [tasks, setTasks] = useState<any[]>([]);
@@ -8,9 +9,13 @@ export const History: React.FC = () => {
   const navigate = useNavigate();
 
   const loadTasks = async () => {
+    if (!isApiConfigured()) {
+      setTasks([]);
+      return;
+    }
     setLoading(true);
     try {
-      const res = await fetch('/api/tasks');
+      const res = await fetch(`${API_BASE}/tasks`);
       const data = await res.json();
       setTasks(data);
     } catch (e) {
@@ -25,8 +30,9 @@ export const History: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: number) => {
+    if (!isApiConfigured()) return;
     try {
-      await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/tasks/${id}`, { method: 'DELETE' });
       message.success('删除成功');
       loadTasks();
     } catch (e) {
@@ -60,7 +66,16 @@ export const History: React.FC = () => {
     },
   ];
 
-  return (
-    <Table columns={columns} dataSource={tasks} rowKey="id" loading={loading} />
-  );
+  if (!isApiConfigured()) {
+    return (
+      <Alert
+        type="warning"
+        showIcon
+        message="未配置后端 API"
+        description="GitHub Pages 为纯静态页。请在本仓库 Settings → Secrets → Actions 中设置 VITE_API_BASE 为已部署的 FastAPI 根地址，并重新运行 Deploy GitHub Pages 工作流。"
+      />
+    );
+  }
+
+  return <Table columns={columns} dataSource={tasks} rowKey="id" loading={loading} />;
 };
