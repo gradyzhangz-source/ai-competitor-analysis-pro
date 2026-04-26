@@ -112,6 +112,8 @@ npm run dev
 
 未配置 `VITE_API_BASE` 时，站点仍可打开，但会提示需配置 API；本地开发仍用 `npm run dev` 走 Vite 代理，不受影响。
 
+**CORS**：若前端在 `https://xxx.github.io`、API 在其它域名，请在 FastAPI 的 `CORSMiddleware` 中允许该 GitHub Pages 来源（当前 `app/main.py` 已 `allow_origins=["*"]`，一般无需改）。
+
 ---
 
 ## GitHub Actions（CI）
